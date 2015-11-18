@@ -3,9 +3,9 @@ AppBundle\Entity\Job:
     table: Job
     id:
         id:
-            type: integer
+            type: string
             generator:
-                strategy: AUTO
+                strategy: NONE
     fields:
         parameters:
             type: json_array

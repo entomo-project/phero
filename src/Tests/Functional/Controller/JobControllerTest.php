@@ -12,6 +12,8 @@ class JobControllerTest extends AbstractBaseFunctionalTest
     {
         $job = new Job();
 
+        $job->setId('42');
+
         $em = $this->getEntityManager();
 
         $em->persist($job);
@@ -65,7 +67,7 @@ class JobControllerTest extends AbstractBaseFunctionalTest
 
         $this->jsonRequest(
             'POST',
-            '/api/v1/job/test',
+            '/api/v1/job/test/42',
             [
                 'parameters' => [
                     'var' => 'foobar',
@@ -81,6 +83,7 @@ class JobControllerTest extends AbstractBaseFunctionalTest
         $this->assertSame(
             [
                 'status' => 'success',
+                'jobId' => '42',
                 'result' => [
                     'var' => 'foobar',
                 ],
@@ -112,7 +115,7 @@ class JobControllerTest extends AbstractBaseFunctionalTest
 
         $this->jsonRequest(
             'POST',
-            '/api/v1/job/test',
+            '/api/v1/job/test/42',
             [
                 'parameters' => [
                     'var' => 'foobar',
@@ -128,6 +131,7 @@ class JobControllerTest extends AbstractBaseFunctionalTest
         $this->assertSame(
             [
                 'status' => 'success',
+                'jobId' => '42',
             ],
             $jsonResponse
         );

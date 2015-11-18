@@ -5,7 +5,7 @@ app_job_set_result:
         _controller: AppBundle:Job:setResult
 
 app_job_create:
-    path:   /api/v1/job/{jobName}
+    path:   /api/v1/job/{jobName}/{jobId}
     methods: [POST]
     defaults:
         _controller: AppBundle:Job:create

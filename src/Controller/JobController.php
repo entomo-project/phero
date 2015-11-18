@@ -31,7 +31,7 @@ class JobController extends Controller
         return new JsonResponse($data);
     }
 
-    public function createAction($jobName, Request $request)
+    public function createAction($jobName, $jobId, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -64,6 +64,8 @@ class JobController extends Controller
         } else {
             $job = new Job();
 
+            $job->setId($jobId);
+
             $job->setParameters($parameters);
 
             $job->setJobInfo($jobInfo);
@@ -86,6 +88,7 @@ class JobController extends Controller
 
         $data = [
             'status' => 'success',
+            'jobId' => $jobId,
         ];
 
         if (isset($result)) {
