@@ -15,6 +15,11 @@ class Job
     protected $jobInfo;
 
     /**
+     * @var string
+     */
+    protected $callbackUrl;
+
+    /**
      * @var array
      */
     protected $parameters;
@@ -44,6 +49,18 @@ class Job
     public function setJobInfo(JobInfo $jobInfo)
     {
         $this->jobInfo = $jobInfo;
+
+        return $this;
+    }
+
+    public function getCallbackUrl()
+    {
+        return $this->callbackUrl;
+    }
+
+    public function setCallbackUrl($callbackUrl)
+    {
+        $this->callbackUrl = $callbackUrl;
 
         return $this;
     }

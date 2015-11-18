@@ -8,6 +8,28 @@ use AppBundle\Tests\Functional\AbstractBaseFunctionalTest;
 
 class JobControllerTest extends AbstractBaseFunctionalTest
 {
+    /**
+     * @var \AppBundle\Manager\CallbackManager
+     */
+    protected $callbackManagerStub;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->callbackManagerStub = $this->getMockBuilder(
+            \AppBundle\Manager\CallbackManager::class
+        )->disableOriginalConstructor()->getMock();
+
+        $this->callbackManagerStub->method(
+            'sendBackResult'
+        )->will($this->returnCallback(function () {
+            return [ 'status' => 'success', ];
+        }));
+
+        $this->container->set('app.manager.callback', $this->callbackManagerStub);
+    }
+
     public function testSetResultAction()
     {
         $job = new Job();
@@ -28,8 +50,6 @@ class JobControllerTest extends AbstractBaseFunctionalTest
             ]
         );
 
-        $updatedJob = $em->merge($job);
-
         $this->assertResponseHttpOk();
 
         $jsonResponse = $this->getJsonResponse();
@@ -41,11 +61,9 @@ class JobControllerTest extends AbstractBaseFunctionalTest
             $jsonResponse
         );
 
-        $this->assertSame(
-            [
-                'foo' => 'bar',
-            ],
-            $updatedJob->getResult()
+        $this->assertCount(
+            0,
+            $em->getRepository(Job::class)->findAll()
         );
     }
 

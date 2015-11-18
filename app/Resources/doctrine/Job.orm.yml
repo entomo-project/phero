@@ -7,6 +7,9 @@ AppBundle\Entity\Job:
             generator:
                 strategy: NONE
     fields:
+        callbackUrl:
+            type: text
+            nullable: true
         parameters:
             type: json_array
             nullable: true

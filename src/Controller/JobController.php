@@ -4,12 +4,21 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Job;
 use AppBundle\Entity\JobInfo;
+use AppBundle\Manager\CallbackManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class JobController extends Controller
 {
+    /**
+     * @return CallbackManager
+     */
+    protected function getCallbackManager()
+    {
+        return $this->get('app.manager.callback');
+    }
+
     public function setResultAction($jobId, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -18,9 +27,18 @@ class JobController extends Controller
 
         /* @var $job Job */
 
-        $job->setResult(
-            $request->request->all()
+        $result = $request->request->all();
+
+        $callbackResult = $this->getCallbackManager()->sendBackResult(
+            $jobId,
+            $result
         );
+
+        if (isset($callbackResult['status']) && $callbackResult['status'] === 'success') {
+            $em->remove($job);
+        } else {
+            $job->setResult($result);
+        }
 
         $em->flush();
 
