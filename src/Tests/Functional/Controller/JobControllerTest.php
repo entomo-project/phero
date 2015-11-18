@@ -2,13 +2,54 @@
 
 namespace AppBundle\Tests\Controller;
 
+use AppBundle\Entity\Job;
+use AppBundle\Entity\JobInfo;
 use AppBundle\Tests\Functional\AbstractBaseFunctionalTest;
 
 class JobControllerTest extends AbstractBaseFunctionalTest
 {
+    public function testSetResultAction()
+    {
+        $job = new Job();
+
+        $em = $this->getEntityManager();
+
+        $em->persist($job);
+
+        $em->flush();
+
+        $this->jsonRequest(
+            'PUT',
+            '/api/v1/job/result/'.$job->getId(),
+            [
+                'foo' => 'bar',
+            ]
+        );
+
+        $updatedJob = $em->merge($job);
+
+        $this->assertResponseHttpOk();
+
+        $jsonResponse = $this->getJsonResponse();
+
+        $this->assertSame(
+            [
+                'status' => 'success',
+            ],
+            $jsonResponse
+        );
+
+        $this->assertSame(
+            [
+                'foo' => 'bar',
+            ],
+            $updatedJob->getResult()
+        );
+    }
+
     public function testSubmitActionSync()
     {
-        $jobInfo = new \AppBundle\Entity\JobInfo();
+        $jobInfo = new JobInfo();
 
         $jobInfo->setJobName('test');
 
@@ -49,13 +90,13 @@ class JobControllerTest extends AbstractBaseFunctionalTest
 
         $this->assertCount(
             0,
-            $em->getRepository(\AppBundle\Entity\Job::class)->findAll()
+            $em->getRepository(Job::class)->findAll()
         );
     }
 
     public function testSubmitActionAsync()
     {
-        $jobInfo = new \AppBundle\Entity\JobInfo();
+        $jobInfo = new JobInfo();
 
         $jobInfo->setJobName('test');
 
@@ -91,14 +132,14 @@ class JobControllerTest extends AbstractBaseFunctionalTest
             $jsonResponse
         );
 
-        $jobs = $em->getRepository(\AppBundle\Entity\Job::class)->findAll();
+        $jobs = $em->getRepository(Job::class)->findAll();
 
         $this->assertCount(
             1,
             $jobs
         );
 
-        /* @var $jobs \AppBundle\Entity\Job[] */
+        /* @var $jobs Job[] */
 
         $this->assertSame(
             $jobInfo,

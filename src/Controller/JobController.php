@@ -10,6 +10,27 @@ use Symfony\Component\HttpFoundation\Request;
 
 class JobController extends Controller
 {
+    public function setResultAction($jobId, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $job = $em->find(Job::class, $jobId);
+
+        /* @var $job Job */
+
+        $job->setResult(
+            $request->request->all()
+        );
+
+        $em->flush();
+
+        $data = [
+            'status' => 'success',
+        ];
+
+        return new JsonResponse($data);
+    }
+
     public function createAction($jobName, Request $request)
     {
         $em = $this->getDoctrine()->getManager();

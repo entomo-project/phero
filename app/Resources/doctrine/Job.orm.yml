@@ -8,4 +8,8 @@ AppBundle\Entity\Job:
                 strategy: AUTO
     fields:
         parameters:
-            type: array
+            type: json_array
+            nullable: true
+        result:
+            type: json_array
+            nullable: true

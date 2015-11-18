@@ -1,3 +1,9 @@
+app_job_set_result:
+    path:   /api/v1/job/result/{jobId}
+    methods: [PUT]
+    defaults:
+        _controller: AppBundle:Job:setResult
+
 app_job_create:
     path:   /api/v1/job/{jobName}
     methods: [POST]

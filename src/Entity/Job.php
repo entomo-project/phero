@@ -19,6 +19,11 @@ class Job
      */
     protected $parameters;
 
+    /**
+     * @var string
+     */
+    protected $result;
+
     public function getId()
     {
         return $this->id;
@@ -44,6 +49,18 @@ class Job
     public function setParameters(array $parameters)
     {
         $this->parameters = $parameters;
+
+        return $this;
+    }
+
+    public function getResult()
+    {
+        return $this->result;
+    }
+
+    public function setResult($result)
+    {
+        $this->result = $result;
 
         return $this;
     }
