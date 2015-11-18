@@ -1,3 +1,11 @@
-app:
-    resource: "@AppBundle/Controller/"
-    type:     annotation
+app_job_create:
+    path:   /api/v1/job/{jobName}
+    methods: [POST]
+    defaults:
+        _controller: AppBundle:Job:create
+
+app_job_retrieve:
+    path:   /api/v1/job/{id}
+    methods: [GET]
+    defaults:
+        _controller: AppBundle:Job:retrieve

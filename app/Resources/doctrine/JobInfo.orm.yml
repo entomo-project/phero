@@ -1,0 +1,11 @@
+AppBundle\Entity\JobInfo:
+    type: entity
+    table: JobInfo
+    id:
+        jobName:
+            type: string
+            generator:
+                strategy: NONE
+    fields:
+        executeCommand:
+            type: text

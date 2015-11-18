@@ -1,6 +1,12 @@
 imports:
     - { resource: config_dev.yml }
 
+doctrine:
+    dbal:
+        driver: pdo_sqlite
+        path: null
+        memory: true
+
 framework:
     test: ~
     session:
